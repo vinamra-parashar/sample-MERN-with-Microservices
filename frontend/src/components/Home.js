@@ -7,7 +7,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/")
+      .get("/api/hello/")
       .then((response) => {
         setMessage(response.data.msg);
       })
@@ -16,24 +16,20 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3002/fetchUser")
+      .get("/api/profile/fetchUser")
       .then((response) => {
         setProfile(response.data);
-        
       })
       .catch((error) => console.error("Error fetching data:", error));
-  },[]);
-
-  
+  }, []);
 
   return (
     <div className="App">
       <h1>{message}</h1>
       <div>
         <h2>Profile</h2>
-        {
-        profile.map((user) => {
-            console.log('user', user)
+        {profile.map((user) => {
+          console.log("user", user);
           return (
             <div>
               <h3>Name: {user.name}</h3>

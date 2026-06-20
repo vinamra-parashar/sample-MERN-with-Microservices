@@ -1,0 +1,45 @@
+services:
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo-data:/data/db
+
+  hello-service:
+    build: ./backend/helloService
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3001/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  profile-service:
+    build: ./backend/profileService
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      MONGO_URL: mongodb://mongo:27017/profiledb
+    depends_on:
+      - mongo
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3002/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      hello-service:
+        condition: service_healthy
+      profile-service:
+        condition: service_healthy
+
+volumes:
+  mongo-data:
