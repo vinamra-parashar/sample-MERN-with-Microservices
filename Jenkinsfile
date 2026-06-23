@@ -23,8 +23,8 @@ pipeline {
             steps {
                 sh '''
                 docker build -t frontend:${IMAGE_TAG} ./frontend
-                docker build -t hello-service:${IMAGE_TAG} ./helloService
-                docker build -t profile-service:${IMAGE_TAG} ./profileService
+                docker build -t hello-service:${IMAGE_TAG} ./backend/helloService
+                docker build -t profile-service:${IMAGE_TAG} ./backend/profileService
                 '''
             }
         }
@@ -77,11 +77,11 @@ pipeline {
                 frontend=${ECR_REGISTRY}/frontend:${IMAGE_TAG} \
                 -n ${NAMESPACE}
 
-                kubectl set image deployment/helloService \
+                kubectl set image deployment/hello-service \
                 helloService=${ECR_REGISTRY}/hello-service:${IMAGE_TAG} \
                 -n ${NAMESPACE}
 
-                kubectl set image deployment/profileService \
+                kubectl set image deployment/profile-service \
                 profileService=${ECR_REGISTRY}/profile-service:${IMAGE_TAG} \
                 -n ${NAMESPACE}
                 '''
@@ -92,8 +92,8 @@ pipeline {
             steps {
                 sh '''
                 kubectl rollout status deployment/frontend -n ${NAMESPACE}
-                kubectl rollout status deployment/helloService -n ${NAMESPACE}
-                kubectl rollout status deployment/profileService -n ${NAMESPACE}
+                kubectl rollout status deployment/hello-service -n ${NAMESPACE}
+                kubectl rollout status deployment/profile-service -n ${NAMESPACE}
                 '''
             }
         }
