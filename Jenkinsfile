@@ -23,8 +23,8 @@ pipeline {
             steps {
                 sh '''
                 docker build -t frontend:${IMAGE_TAG} ./frontend
-                docker build -t hello-service:${IMAGE_TAG} ./hello-service
-                docker build -t profile-service:${IMAGE_TAG} ./profile-service
+                docker build -t helloService:${IMAGE_TAG} ./helloService
+                docker build -t profileService:${IMAGE_TAG} ./profileService
                 '''
             }
         }
@@ -44,8 +44,8 @@ pipeline {
             steps {
                 sh '''
                 docker tag frontend:${IMAGE_TAG} ${ECR_REGISTRY}/frontend:${IMAGE_TAG}
-                docker tag hello-service:${IMAGE_TAG} ${ECR_REGISTRY}/hello-service:${IMAGE_TAG}
-                docker tag profile-service:${IMAGE_TAG} ${ECR_REGISTRY}/profile-service:${IMAGE_TAG}
+                docker tag helloService:${IMAGE_TAG} ${ECR_REGISTRY}/helloService:${IMAGE_TAG}
+                docker tag profileService:${IMAGE_TAG} ${ECR_REGISTRY}/profileService:${IMAGE_TAG}
                 '''
             }
         }
@@ -54,8 +54,8 @@ pipeline {
             steps {
                 sh '''
                 docker push ${ECR_REGISTRY}/frontend:${IMAGE_TAG}
-                docker push ${ECR_REGISTRY}/hello-service:${IMAGE_TAG}
-                docker push ${ECR_REGISTRY}/profile-service:${IMAGE_TAG}
+                docker push ${ECR_REGISTRY}/helloService:${IMAGE_TAG}
+                docker push ${ECR_REGISTRY}/profileService:${IMAGE_TAG}
                 '''
             }
         }
@@ -77,12 +77,12 @@ pipeline {
                 frontend=${ECR_REGISTRY}/frontend:${IMAGE_TAG} \
                 -n ${NAMESPACE}
 
-                kubectl set image deployment/hello-service \
-                hello-service=${ECR_REGISTRY}/hello-service:${IMAGE_TAG} \
+                kubectl set image deployment/helloService \
+                helloService=${ECR_REGISTRY}/helloService:${IMAGE_TAG} \
                 -n ${NAMESPACE}
 
-                kubectl set image deployment/profile-service \
-                profile-service=${ECR_REGISTRY}/profile-service:${IMAGE_TAG} \
+                kubectl set image deployment/profileService \
+                profileService=${ECR_REGISTRY}/profileService:${IMAGE_TAG} \
                 -n ${NAMESPACE}
                 '''
             }
@@ -92,8 +92,8 @@ pipeline {
             steps {
                 sh '''
                 kubectl rollout status deployment/frontend -n ${NAMESPACE}
-                kubectl rollout status deployment/hello-service -n ${NAMESPACE}
-                kubectl rollout status deployment/profile-service -n ${NAMESPACE}
+                kubectl rollout status deployment/helloService -n ${NAMESPACE}
+                kubectl rollout status deployment/profileService -n ${NAMESPACE}
                 '''
             }
         }
