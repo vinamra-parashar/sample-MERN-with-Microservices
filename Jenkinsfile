@@ -23,8 +23,8 @@ pipeline {
             steps {
                 sh '''
                 docker build -t frontend:${IMAGE_TAG} ./frontend
-                docker build -t helloService:${IMAGE_TAG} ./helloService
-                docker build -t profileService:${IMAGE_TAG} ./profileService
+                docker build -t hello-service:${IMAGE_TAG} ./helloService
+                docker build -t profile-service:${IMAGE_TAG} ./profileService
                 '''
             }
         }
@@ -44,8 +44,8 @@ pipeline {
             steps {
                 sh '''
                 docker tag frontend:${IMAGE_TAG} ${ECR_REGISTRY}/frontend:${IMAGE_TAG}
-                docker tag helloService:${IMAGE_TAG} ${ECR_REGISTRY}/helloService:${IMAGE_TAG}
-                docker tag profileService:${IMAGE_TAG} ${ECR_REGISTRY}/profileService:${IMAGE_TAG}
+                docker tag hello-service:${IMAGE_TAG} ${ECR_REGISTRY}/hello-service:${IMAGE_TAG}
+                docker tag profile-service:${IMAGE_TAG} ${ECR_REGISTRY}/profile-service:${IMAGE_TAG}
                 '''
             }
         }
@@ -54,8 +54,8 @@ pipeline {
             steps {
                 sh '''
                 docker push ${ECR_REGISTRY}/frontend:${IMAGE_TAG}
-                docker push ${ECR_REGISTRY}/helloService:${IMAGE_TAG}
-                docker push ${ECR_REGISTRY}/profileService:${IMAGE_TAG}
+                docker push ${ECR_REGISTRY}/hello-service:${IMAGE_TAG}
+                docker push ${ECR_REGISTRY}/profile-service:${IMAGE_TAG}
                 '''
             }
         }
@@ -78,11 +78,11 @@ pipeline {
                 -n ${NAMESPACE}
 
                 kubectl set image deployment/helloService \
-                helloService=${ECR_REGISTRY}/helloService:${IMAGE_TAG} \
+                helloService=${ECR_REGISTRY}/hello-service:${IMAGE_TAG} \
                 -n ${NAMESPACE}
 
                 kubectl set image deployment/profileService \
-                profileService=${ECR_REGISTRY}/profileService:${IMAGE_TAG} \
+                profileService=${ECR_REGISTRY}/profile-service:${IMAGE_TAG} \
                 -n ${NAMESPACE}
                 '''
             }
