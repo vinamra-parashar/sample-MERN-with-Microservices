@@ -68,7 +68,7 @@ This project demonstrates the deployment of a containerized MERN-based microserv
 
 ---
 
-# Phase 1 – Version Control with Git
+# Phase 1 – Version Control with Git & Prepare the MERN Application
 
 ## Repository Setup
 
@@ -76,9 +76,20 @@ This project demonstrates the deployment of a containerized MERN-based microserv
 * Source code stored in GitHub repository.
 * Jenkins integrated with GitHub repository.
 
-Repository URL:
+Environment Configuration
 
-https://github.com/vinamra-parashar/sample-MERN-with-Microservices
+Environment-specific settings were managed using .env files to keep configuration separate from application code.
+
+Backend Services
+
+helloService/.env
+
+PORT=3001
+
+profileService/.env
+
+PORT=3002
+MONGO_URL=<MongoDB Connection String>
 
 ---
 
